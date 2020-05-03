@@ -1,8 +1,5 @@
 ﻿
 Imports Excel = Microsoft.Office.Interop.Excel
-Imports BioVB.Cloning
-Imports BioVB.DNACollection
-Imports BioVB.General
 
 Public Module ExtendedFunctions
 

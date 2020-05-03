@@ -72,26 +72,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ExcelInterop-AddIn.dna" />
-    <None Include="packages.config" />
-    <None Include="Properties\ExcelDna.Build.props" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcelInterop.vb" />
+    <Compile Include="ImportDataFromExcel\GrabDataFromExcelWorkbook.vb" />
+    <Compile Include="ImportDataFromExcel\SelectFromExcelTable.vb" />
+    <Compile Include="ImportDataFromExcel\UseExcelAsInput.vb" />
+    <Compile Include="ImportDataFromExcel\_ImportDataFromExcel.vb" />
+    <Compile Include="Shared\2DArrayFilter.vb" />
+    <Compile Include="Shared\InternalMethods.vb" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="My Project\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="ExcelDna.Integration, Version=0.34.6373.42344, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.Integration.0.34.6\lib\ExcelDna.Integration.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ExcelDna.IntelliSense, Version=1.0.5.38759, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ExcelDna.IntelliSense.1.0.6\lib\net40\ExcelDna.IntelliSense.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
@@ -106,28 +98,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Microsoft.Office.Core">
-      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
-      <VersionMajor>2</VersionMajor>
-      <VersionMinor>8</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="Microsoft.Office.Interop.Excel">
       <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>9</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="VBIDE">
-      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
-      <VersionMajor>5</VersionMajor>
-      <VersionMinor>3</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
       <Isolated>False</Isolated>
