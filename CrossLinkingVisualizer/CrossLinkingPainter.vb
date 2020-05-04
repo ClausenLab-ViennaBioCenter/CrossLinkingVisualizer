@@ -1,5 +1,9 @@
 ﻿Imports System.ComponentModel
-
+Imports System.Globalization
+Imports System.Linq
+Imports System.Windows.Markup
+Imports VBExtensions
+Imports CrossLinkingVisualizer
 
 Public Class CrossLinkingPainter
 
@@ -430,14 +434,14 @@ Public Class CrossLinkingPainter
 
         Dim currentValueFilterViewModels As New List(Of ValueFilterViewModel)
 
-        Dim BottomSliderSpacing As Double = 20
+        Dim BottomSliderSpacing As Double = 25
 
         Dim TemplateUIElement = CType(UIElementsDictionary(currentSourceObjectViewModel), Rectangle)
 
 
         Dim MyRangeFilter = New RangeFilter(currentSourceObjectViewModel)
         Dim MyDistanceFilter = New DistanceFilter(currentSourceObjectViewModel)
-        Dim MyFDRFilter = New FDRFilter(0, Parent.FDRHardLimit)
+        Dim MyFDRFilter = New FDRFilter(Parent.FDRHardLimit)
 
         With ValueFilters
             .Add(MyRangeFilter)
@@ -581,4 +585,62 @@ Public Class CrossLinkingPainter
 
 
     End Sub
+
+    Public Function GenerateSVG() As String
+
+        Dim Strings As New List(Of String)
+
+        Dim cultEN = CultureInfo.GetCultureInfo("en-US")
+
+        Strings.Capacity = 1000
+
+        Dim TotalWidth = DrawWindow.DrawingCanvas.ActualWidth
+        Dim TotalHeight = DrawWindow.DrawingCanvas.ActualHeight
+
+        Strings.Add(String.Format("<svg xmlns=""http://www.w3.org/2000/svg"" width=""{0}"" height=""{1}"" version=""1.1"">", TotalWidth, TotalHeight))
+
+        For Each template In Parent.Data.SourceObjects
+
+            Strings.Add("")
+            Strings.Add(String.Format("<g id=""{0}"">", template.Name))
+
+            Strings.Add(template.GetSvgEntry)
+
+            Strings.Add("")
+            Strings.Add(String.Format("<g id=""{0}_secondaryStructure"">", template.Name))
+            template.Annotations.SecondaryStructure.ForEach(Sub(x)
+                                                                Strings.Add(x.GetSvgEntry())
+                                                            End Sub)
+            Strings.Add("</g>")
+
+
+            Strings.Add("")
+            Strings.Add(String.Format("<g id=""{0}_internalCrosslinks"">", template.Name))
+            Parent.Data.Crosslinks.Where(Function(x) x.IsInternal).Where(Function(x) x.ShouldBeVisible = True).ToList.ForEach(Sub(x)
+                                                                                                                                  Strings.Add(x.GetSvgEntry())
+                                                                                                                              End Sub)
+            Strings.Add("</g>")
+
+            Strings.Add("")
+            Strings.Add("</g>")
+
+        Next
+
+        Strings.Add("")
+        Strings.Add("")
+        Strings.Add("")
+        Strings.Add(String.Format("<g id=""interProteinCrosslinks"">"))
+        Parent.Data.Crosslinks.Where(Function(x) Not x.IsInternal).Where(Function(x) x.ShouldBeVisible = True).ToList.ForEach(Sub(x)
+                                                                                                                                  Strings.Add(x.GetSvgEntry())
+                                                                                                                              End Sub)
+        Strings.Add("</g>")
+
+        Strings.Add("")
+        Strings.Add("</svg>")
+
+        Return String.Join(Environment.NewLine, Strings)
+
+    End Function
+
+
 End Class

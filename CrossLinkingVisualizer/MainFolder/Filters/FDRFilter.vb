@@ -28,8 +28,9 @@ Public Class FDRFilter
         End Set
     End Property
 
-    Public Sub New(lowLimit As Double, highLimit As Double)
-        FDRLowLimit = lowLimit
+    Public Sub New(highLimit As Double)
+
+        FDRLowLimit = 0
         FDRHighLimit = highLimit
     End Sub
 

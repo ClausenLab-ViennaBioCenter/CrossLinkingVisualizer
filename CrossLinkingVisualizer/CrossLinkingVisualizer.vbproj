@@ -27,8 +27,8 @@
     <ProductName>CrossLinkingVisualizer</ProductName>
     <PublisherName>Juraj Ahel</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>19</ApplicationRevision>
-    <ApplicationVersion>0.10.0.%2a</ApplicationVersion>
+    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -114,15 +114,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DelegateCommand.vb" />
-    <Compile Include="ExistingFilePath.vb" />
-    <Compile Include="FileDoesNotExistException.vb" />
-    <Compile Include="FileImporter.vb" />
-    <Compile Include="FilePath.vb" />
-    <Compile Include="GeneralExtensions.vb" />
+    <Compile Include="Extensions\DelegateCommand.vb" />
+    <Compile Include="Extensions\ExistingFilePath.vb" />
+    <Compile Include="Extensions\FileDoesNotExistException.vb" />
+    <Compile Include="Extensions\FileImporter.vb" />
+    <Compile Include="Extensions\FilePath.vb" />
+    <Compile Include="Extensions\GeneralExtensions.vb" />
+    <Compile Include="Extensions\MathExtensions.vb" />
+    <Compile Include="ICrosslinkVisualizationProvider.vb" />
+    <Compile Include="MainFolder\Helper\ShapeToSVGConverter.vb" />
     <Compile Include="MainFolder\Interfaces\ICrosslinkingPainterDrawable.vb" />
     <Compile Include="MainFolder\Interfaces\IValueFilter.vb" />
     <Compile Include="MainFolder\Helper\StartPositionConverter.vb" />
+    <Compile Include="MainFolder\ViewModels\Crosslinking3DVisualizationViewModel.vb" />
     <Compile Include="MainFolder\ViewModels\HorizontalSliderViewModel.vb" />
     <Compile Include="MainFolder\Filters\FDRFilter.vb" />
     <Compile Include="MainFolder\Helper\BindingHelper.vb" />
@@ -138,15 +142,20 @@
     <Compile Include="MainFolder\Filters\RangeFilter.vb" />
     <Compile Include="MainFolder\Filters\VisibilityFilter.vb" />
     <Compile Include="MainFolder\ViewModels\DomainViewModel.vb" />
+    <Compile Include="MainFolder\ViewModels\ModelVizualization3DInputWindowViewModel.vb" />
     <Compile Include="MainFolder\ViewModels\SecondaryStructureViewModel.vb" />
     <Compile Include="MainFolder\ViewModels\TemplateNumberScaleViewModel.vb" />
     <Compile Include="MainFolder\ViewModels\ValueFilterViewModel.vb" />
-    <Compile Include="MathExtensions.vb" />
+    <Compile Include="MolecularModelViewModel.vb" />
+    <Compile Include="Pymol3DVisualizationProvider.vb" />
     <Compile Include="Views\CrossLinkingVisualizationWindow.xaml.vb">
       <DependentUpon>CrossLinkingVisualizationWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainFolder\Helper\ValidatedName.vb" />
     <Compile Include="MainFolder\Models\VisualizerDataModel.vb" />
+    <Compile Include="Views\ModelVizualization3DInputWindow.xaml.vb">
+      <DependentUpon>ModelVizualization3DInputWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="VisualizerViewModel.vb" />
     <Compile Include="Views\RangeSlider.xaml.vb">
       <DependentUpon>RangeSlider.xaml</DependentUpon>
@@ -168,6 +177,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ModelVizualization3DInputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RangeSlider.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -229,9 +242,9 @@
       <Project>{0824e74d-38cf-48f7-ad00-91154f6046ca}</Project>
       <Name>ExcelInterop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VBExtensions\VBExtensions.vbproj">
-      <Project>{53a048c1-01be-4adb-9282-7483640db54a}</Project>
-      <Name>VBExtensions</Name>
+    <ProjectReference Include="..\PymolInterface\PymolInterface.vbproj">
+      <Project>{67bcd539-e1be-4f46-827b-d9b74df736c7}</Project>
+      <Name>PymolInterface</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

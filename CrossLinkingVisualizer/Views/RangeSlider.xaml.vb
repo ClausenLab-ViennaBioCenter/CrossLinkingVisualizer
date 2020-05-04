@@ -64,12 +64,12 @@
     End Sub
 
     Private Sub OnLowerValueChange(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
-        UpperSlider.Value = System.Math.Max(LowerSlider.Value, UpperSlider.Value)
+        UpperSlider.Value = Math.Max(LowerSlider.Value,UpperSlider.Value)
     End Sub
 
     Private Sub OnUpperValueChange(sender As Object, e As RoutedPropertyChangedEventArgs(Of Double))
-        LowerSlider.Value = System.Math.Min(LowerSlider.Value, UpperSlider.Value)
-    End Sub
+        LowerSlider.Value = Math.Min(LowerSlider.Value,UpperSlider.Value)
+        End Sub
 
 
 

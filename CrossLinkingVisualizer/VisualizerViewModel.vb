@@ -1,4 +1,6 @@
-﻿
+﻿Imports VBExtensions.IOExtensions
+Imports VBExtensions
+Imports PymolInterface
 
 Public Class VisualizerViewModel
     Implements ComponentModel.INotifyPropertyChanged
@@ -9,6 +11,8 @@ Public Class VisualizerViewModel
     Public ReadOnly Property Data As CrosslinkingData
     Public Property Parent As MainWindow
     Public Property Painter As CrossLinkingPainter
+
+    Public Property VisualizationProviders As List(Of ICrosslinkVisualizationProviderAsync)
 
     Public Property FDRHardLimit As Double
         Get
@@ -25,6 +29,10 @@ Public Class VisualizerViewModel
     Public ReadOnly Property Command_ImportCrosslinks As ICommand
     Public ReadOnly Property Command_ImportAnnotation As ICommand
     Public ReadOnly Property Command_ImportSecondaryStructure As ICommand
+    Public ReadOnly Property Command_UpdateVisualizations As ICommand
+    Public ReadOnly Property Command_UpdatePymolPath As ICommand
+    Public ReadOnly Property Command_ExportSVG As ICommand
+    Public ReadOnly Property Command_Color3DBySecondaryStructure As ICommand
 
     Private Function ImportCrossLinksAllowed() As Boolean
         Return True
@@ -43,16 +51,31 @@ Public Class VisualizerViewModel
         Dim StartIndex As Integer
         Dim EndIndex As Integer
 
+#If DEBUG Then
 
-        Try
-            File = FileImporter.SelectFile(iMultiselect:=False)
+        If IsNothing(Data.SourceObjects) OrElse Data.SourceObjects.Count = 0 Then
+            File = New ExistingFilePath("\\storage.imp.ac.at\groups\clausen\_General Scripts Tools\new\CrossLinkingVisualizer\example_inputs\example_template_Mys1b.txt")
+        Else
+            Try
+                File = FileImporter.SelectFile
+            Catch ex As Exception
+                MsgBox("Error importing file, " & ex.Message)
+                Exit Sub
+            End Try
+
+            If File Is Nothing Then Exit Sub
+        End If
+
+#Else
+               Try
+            File = FileImporter.SelectFile()
         Catch ex As Exception
             MsgBox("Error importing file, " & ex.Message)
             Exit Sub
         End Try
 
         If File Is Nothing Then Exit Sub
-
+#End If
 
         Using reader As New System.IO.StreamReader(File.FilePath)
             With reader
@@ -79,7 +102,7 @@ Public Class VisualizerViewModel
 
         With SequenceString
 
-            Dim AllowedCharacters = "ACDEFGHIKLMNPQRSTVWXY"
+            Dim AllowedCharacters As String = "ACDEFGHIKLMNPQRSTVWXY"
 
             If Not SequenceString.ToCharArray().All(Function(x) AllowedCharacters.Contains(x)) Then
                 Throw New ArgumentOutOfRangeException("Non protein coding characters found")
@@ -132,12 +155,18 @@ Public Class VisualizerViewModel
 
         Data = New CrosslinkingData()
 
+        VisualizationProviders = New List(Of ICrosslinkVisualizationProviderAsync)
+
         FDRHardLimit = 0.2
 
+        Command_UpdateVisualizations = New DelegateCommand(Of String)(AddressOf UpdateVisualizationProviders, AddressOf UpdateVisualizationProvidersAllowed)
         Command_ImportTemplate = New DelegateCommand(Of String)(AddressOf ImportTemplate, AddressOf ImportTemplateAllowed, AddressOf ImportExceptionHandler)
         Command_ImportSecondaryStructure = New DelegateCommand(Of String)(AddressOf ImportSecondaryStructure)
         Command_ImportAnnotation = New DelegateCommand(Of String)(AddressOf ImportDomains, AddressOf ImportDomainsAllowed, AddressOf ImportDomainsExceptionHandler)
         Command_ImportCrosslinks = New DelegateCommand(Of String)(AddressOf ImportCrosslinkData, AddressOf ImportCrosslinkDataAllowed, AddressOf ImportCrosslinkDataExceptionHandler)
+        Command_UpdatePymolPath = New DelegateCommand(Of String)(AddressOf UpdatePymolPath)
+        Command_ExportSVG = New DelegateCommand(Of String)(AddressOf ExportSVG)
+        Command_Color3DBySecondaryStructure = New DelegateCommand(Of String)(AddressOf Color3DBySecondaryStructure)
 
         Command_ShowWindow = New DelegateCommand(Of String)(AddressOf ShowWindow, AddressOf DrawAllowed)
 
@@ -147,6 +176,49 @@ Public Class VisualizerViewModel
 
 
     End Sub
+
+    Private Sub Color3DBySecondaryStructure(obj As String)
+
+        Dim pymolProvider As Pymol3DVisualizationProvider = VisualizationProviders.Where(Function(x) TypeOf x Is Pymol3DVisualizationProvider).Single()
+
+        pymolProvider.ColorBySS
+
+    End Sub
+
+    Private Sub ExportSVG(obj As String)
+
+        Dim Dialog As New Microsoft.Win32.SaveFileDialog
+
+        Dialog.ShowDialog()
+
+        Dim TargetFile = Dialog.FileName
+
+        IO.File.WriteAllText(TargetFile, Painter.GenerateSVG)
+
+    End Sub
+
+    Private Sub UpdatePymolPath(obj As String)
+
+        PymolController.UpdatePymolPath
+
+    End Sub
+
+    Private Function UpdateVisualizationProvidersAllowed(obj As Exception) As Boolean
+        Return True
+    End Function
+
+    Private Async Sub UpdateVisualizationProviders(obj As String)
+
+        For Each provider In VisualizationProviders
+
+            provider.UpdateAsync(Me).GetAwaiter().GetResult()
+
+            'Task.Run(Sub() provider.UpdateAsync(Me).ConfigureAwait(False))
+
+        Next
+
+    End Sub
+
 
     Private Sub CommandSharedExceptionHandler(obj As Exception)
         With obj
@@ -193,10 +265,15 @@ Public Class VisualizerViewModel
 
 
 
-
-        File = FileImporter.SelectFile(iMultiselect:=False)
-
-        If File Is Nothing Then Exit Sub
+#If DEBUG Then
+        If Data.SourceObjects.First().Annotations.SecondaryStructure.Count = 0 Then
+            File = New ExistingFilePath("\\storage.imp.ac.at\groups\clausen\_General Scripts Tools\new\CrossLinkingVisualizer\example_inputs\example_secondaryStructure_Mys1b_psipred.txt")
+        Else
+            File = FileImporter.SelectFile
+        End If
+#Else
+        File = FileImporter.SelectFile()
+#End If
 
         'TODO: pre-check if it's empty, no need to read the file if yes
         'If ExistingTemplateNames.Count= 0 Then
@@ -302,8 +379,21 @@ Public Class VisualizerViewModel
         Dim ExistingTemplateNames As IEnumerable(Of String)
 
 
+#If DEBUG Then
 
-        File = FileImporter.SelectFile(iMultiselect:=False)
+        If IsNothing(Data.Crosslinks) OrElse Data.Crosslinks.Count = 0 Then
+            File = New ExistingFilePath("\\storage.imp.ac.at\groups\clausen\_General Scripts Tools\new\CrossLinkingVisualizer\example_inputs\example_crosslinks_Mys1b.csv")
+            'File = New ExistingFilePath("\\storage.imp.ac.at\groups\clausen\_General Scripts Tools\new\CrossLinkingVisualizer\example_inputs\example_crosslinks_Mys1b_test2.csv")
+        Else
+            File = FileImporter.SelectFile
+        End If
+
+        'File = FileImporter.SelectFile(iMultiselect:=False)
+#Else
+
+        File = FileImporter.SelectFile()
+
+#End If
 
 
         If File Is Nothing Then Exit Sub
@@ -394,4 +484,7 @@ Public Class VisualizerViewModel
 
     End Sub
 
+    Protected Overrides Sub Finalize()
+        MyBase.Finalize()
+    End Sub
 End Class

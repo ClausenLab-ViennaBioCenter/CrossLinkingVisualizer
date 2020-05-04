@@ -3,8 +3,8 @@ Imports System.ComponentModel
 Imports System.Runtime.Serialization.Formatters
 
 Public Class CrosslinkViewModel
+    Implements INotifyPropertyChanged, IDisposable
 
-    Implements INotifyPropertyChanged
     Public Event PropertyChanged As PropertyChangedEventHandler Implements INotifyPropertyChanged.PropertyChanged
 
     Public ReadOnly Property SourceObjectViewModel As CrosslinkingSourceObjectViewModel
@@ -136,13 +136,21 @@ Public Class CrosslinkViewModel
     End Sub
 
     Private Shared ReadOnly Property BoolToVisConverter
-    Get
-        Return New BooleanToVisibilityConverter
-    End Get
-        
+        Get
+            Return New BooleanToVisibilityConverter
+        End Get
+
     End Property
 
-    Private Function GetEndPosition(targetCanvas As Canvas, DrawingScale As Double) As Point
+    Public ReadOnly Property IsInternal As Boolean
+        Get
+            Return SourceObjectViewModel Is TargetObjectViewModel
+        End Get
+    End Property
+
+
+
+    Public Function GetEndPosition(targetCanvas As Canvas, DrawingScale As Double) As Point
 
         Dim SourceUIElement As UIElement = TargetObjectViewModel.Shape
 
@@ -160,7 +168,7 @@ Public Class CrosslinkViewModel
 
     End Function
 
-    Private Function GetStartPosition(targetCanvas As Canvas, DrawingScale As Double) As Point
+    Public Function GetStartPosition(targetCanvas As Canvas, DrawingScale As Double) As Point
 
         Dim SourceUIElement As UIElement = SourceObjectViewModel.Shape
 
@@ -262,4 +270,50 @@ Public Class CrosslinkViewModel
         End With
 
     End Sub
+
+#Region "IDisposable Support"
+    Private disposedValue As Boolean ' To detect redundant calls
+
+    ' IDisposable
+    Protected Overridable Sub Dispose(disposing As Boolean)
+        If Not disposedValue Then
+            If disposing Then
+                ' TODO: dispose managed state (managed objects).
+            End If
+
+            ' TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+            ' TODO: set large fields to null.
+        End If
+        disposedValue = True
+    End Sub
+
+    ' TODO: override Finalize() only if Dispose(disposing As Boolean) above has code to free unmanaged resources.
+    'Protected Overrides Sub Finalize()
+    '    ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+    '    Dispose(False)
+    '    MyBase.Finalize()
+    'End Sub
+
+    ' This code added by Visual Basic to correctly implement the disposable pattern.
+    Public Sub Dispose() Implements IDisposable.Dispose
+        ' Do not change this code.  Put cleanup code in Dispose(disposing As Boolean) above.
+        Dispose(True)
+        ' TODO: uncomment the following line if Finalize() is overridden above.
+        ' GC.SuppressFinalize(Me)
+    End Sub
+#End Region
+
+    Public Function GetSvgEntry() As String
+
+        Select Case True
+            Case TypeOf CrossLinkViewUIPath Is Line
+                Return ShapeToSVGConverter.ShapeToSVG(CType(CrossLinkViewUIPath, Line))
+            Case TypeOf CrossLinkViewUIPath Is Path
+                Return ShapeToSVGConverter.ShapeToSVG(CType(CrossLinkViewUIPath, Path))
+            Case Else
+                Throw New NotImplementedException
+        End Select
+
+    End Function
+
 End Class

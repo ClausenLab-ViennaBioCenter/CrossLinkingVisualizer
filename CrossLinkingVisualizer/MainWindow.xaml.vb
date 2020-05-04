@@ -32,6 +32,19 @@
 
         VM.Parent = Me
 
+        VM.VisualizationProviders.Add(New Pymol3DVisualizationProvider(VM))
+
+        '#If DEBUG Then
+        '        With MolecularModels
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\sa.pdb")
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\sb.pdb")
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\sc.pdb")
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\mist.pdb")
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\sd.pdb")
+        '            .Add("\\storage.imp.ac.at\groups\clausen\tim\rnf213\juraj\se.pdb")
+        '        End With
+        '#End If
+
         Me.DataContext = VM
 
         VM.ShowWindow()

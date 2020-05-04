@@ -1,4 +1,5 @@
-﻿
+﻿Imports VBExtensions
+
 Public Class DoubleRoundingConverter
     Implements IValueConverter
 

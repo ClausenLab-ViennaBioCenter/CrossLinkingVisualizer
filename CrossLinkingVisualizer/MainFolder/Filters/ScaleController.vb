@@ -297,7 +297,7 @@ Public Class ScaleController
             Else
 
                 Dim MaxNegativeShift = MaxLowLimit - ScaleAreaLowLimit
-                finalShift = System.Math.Max(MaxNegativeShift, shiftAmount)
+                finalShift = Math.Max(MaxNegativeShift, shiftAmount)
 
                 'start with low, to prevent the possibility of high "overshooting" it
                 ScaleToRangeLink = False
@@ -313,7 +313,7 @@ Public Class ScaleController
 
     Friend Sub ScaleCenteredOn(extraScaleFactor As Double, targetScaleCenter As Double)
 
-        If System.Math.Round(extraScaleFactor, 4) <> 1 Then
+        If Math.Round(extraScaleFactor, 4) <> 1 Then
 
             If targetScaleCenter > MaxCenter Then
                 targetScaleCenter = MaxCenter

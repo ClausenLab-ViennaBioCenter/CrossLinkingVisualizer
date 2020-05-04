@@ -15,11 +15,23 @@
     <Grid x:Name="TopGrid">
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="155*"/>
-            <ColumnDefinition Width="363*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        
-        <StackPanel x:Name="Buttons" HorizontalAlignment="Right" VerticalAlignment="Top" Width="Auto" Grid.Column="1">
+
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Width="Auto" Grid.Column="1">
+
+            <Button Command="{Binding Command_UpdatePymolPath}" Content="Set Pymol exe path"></Button>
+            <Button x:Name="Button_DrawInPymol" Command="{Binding Command_UpdateVisualizations}" Content="Pymol" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
+            <Button x:Name="Button_PymolColor" Command="{Binding Command_Color3DBySecondaryStructure}" Content="ColorBySS" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
+            <Button x:Name="Button_SVG" Command="{Binding Command_ExportSVG}" Content="ExportSvg" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
+            
+
+
+        </StackPanel>
+
+        <StackPanel x:Name="Buttons" HorizontalAlignment="Right" VerticalAlignment="Top" Width="Auto" Grid.Column="2">
             <Button x:Name="Button_ImportProtein" Command="{Binding Command_ImportTemplate}"  Content="Import Protein" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
             <Button x:Name="Button_ImportSS" Command="{Binding Command_ImportSecondaryStructure}"  Content="Import SS" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
             <Button x:Name="Button_ImportDomains" IsEnabled="False" Command="{Binding Command_ImportAnnotation}" Content="Import Domains" HorizontalAlignment="Center" VerticalAlignment="Center" Width="123" UseLayoutRounding="False"/>
@@ -36,6 +48,7 @@
         </StackPanel>
 
         <TextBlock x:Name="textBlock" IsEnabled="False" Visibility="Hidden" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding Parent.ProgramNameAndVersion}" VerticalAlignment="Top" Height="55" Width="120"/>
+        
 
     </Grid>
 

@@ -1,4 +1,5 @@
-﻿
+﻿Imports VBExtensions.Math
+
 Public Class TemplateNumberScaleViewModel
     Implements ICrosslinkingPainterDrawable
 

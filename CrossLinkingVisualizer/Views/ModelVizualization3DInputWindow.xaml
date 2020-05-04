@@ -1,0 +1,91 @@
+﻿<Window x:Class="ModelVizualization3DInputWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CrossLinkingVisualizer"
+        mc:Ignorable="d"
+        Title="ModelVizualization3DInputWindow" Height="310.248" Width="398.913"
+        x:Name="window">
+    
+    <Window.DataContext>
+        <local:ModelVizualization3DInputWindowViewModel />
+    </Window.DataContext>
+
+    <!--SelectedItem="{Binding SelectedSourceObject, Mode=OneWayToSource}"-->
+    <DataGrid x:Name="mainDataGrid" 
+              ItemsSource="{Binding VisualizationViewModels, Mode=OneWay}" 
+              SelectedItem="{Binding DataContext.SelectedSourceObject, Mode=OneWayToSource, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+              AutoGenerateColumns="False"
+              CanUserAddRows="False"
+              CanUserDeleteRows="False"
+              HeadersVisibility="None"
+              IsReadOnly="True">
+        
+        <!--<DataGridRowDetailsVisibilityMode>Visible</DataGridRowDetailsVisibilityMode>-->
+
+        <DataGrid.Columns>
+            <!--<DataGridTextColumn Binding="{Binding SourceCrosslinkingObject.Name, Mode=OneTime}"></DataGridTextColumn>-->
+            
+            <DataGridTemplateColumn Width="*">
+                <DataGridTemplateColumn.CellTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Vertical">
+                        <DockPanel>
+                                <TextBlock Text="{Binding SourceCrosslinkingObject.Name, Mode=OneTime}" HorizontalAlignment="Left"></TextBlock>
+                                <Button Content="Add models..." 
+                                        Command="{Binding DataContext.Command_AddFilesToCurrentObject, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                                        HorizontalAlignment="Right">
+                                </Button>
+                        </DockPanel>
+                            <DataGrid x:Name="innerDataGrid" 
+                                      ItemsSource="{Binding MolecularModels, Mode=TwoWay}" 
+                                      SelectedItem="{Binding DataContext.SelectedFileName, Mode=OneWayToSource, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                                      AutoGenerateColumns="False"
+                                      HeadersVisibility="None"
+                                      IsReadOnly="True">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="*" MaxWidth="{Binding Width, RelativeSource={RelativeSource FindAncestor, AncestorType=DataGridTemplateColumn}}">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <DockPanel>
+                                                    <TextBlock Text="{Binding Filename.FilePath}" HorizontalAlignment="Left" TextTrimming="CharacterEllipsis"></TextBlock>
+                                                    <Button Content="Delete" 
+                                                            Command="{Binding DataContext.Command_RemoveSelectedFile, RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}" 
+                                                            HorizontalAlignment="Right">
+                                                    </Button>
+                                                </DockPanel>
+                                                
+
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+            </DataGridTemplateColumn>
+        </DataGrid.Columns>
+
+        <!-- <DataGrid.RowDetailsTemplate>
+            <DataTemplate>
+                <DataGrid x:Name="innerDataGrid" SelectedItem="{Binding SelectedFileName, Mode=OneWayToSource}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding MolecularModels}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            </DataTemplate>
+        </DataGrid.RowDetailsTemplate>
+
+    -->
+
+        <!--<DataGrid.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Add model file to current item..." Command="{Binding Command_AddFilesToCurrentObject, Mode=OneTime}"></MenuItem>
+                <MenuItem Header="Remove selected model file..." Command="{Binding Command_RemoveSelectedFile, Mode=OneTime}"></MenuItem>
+            </ContextMenu>
+        </DataGrid.ContextMenu>-->
+        
+    </DataGrid>
+</Window>

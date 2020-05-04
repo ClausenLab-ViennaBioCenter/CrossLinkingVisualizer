@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29721.120
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ExcelInterop", "ExcelInterop\ExcelInterop.vbproj", "{0824E74D-38CF-48F7-AD00-91154F6046CA}"
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "CrossLinkingVisualizer", "CrossLinkingVisualizer\CrossLinkingVisualizer.vbproj", "{FE15170D-7948-40E9-BD81-CED46CEFA0A1}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ExcelInterop", "ExcelInterop\ExcelInterop.vbproj", "{0824E74D-38CF-48F7-AD00-91154F6046CA}"
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PymolInterface", "PymolInterface\PymolInterface.vbproj", "{67BCD539-E1BE-4F46-827B-D9B74DF736C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +15,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0824E74D-38CF-48F7-AD00-91154F6046CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0824E74D-38CF-48F7-AD00-91154F6046CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0824E74D-38CF-48F7-AD00-91154F6046CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0824E74D-38CF-48F7-AD00-91154F6046CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE15170D-7948-40E9-BD81-CED46CEFA0A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67BCD539-E1BE-4F46-827B-D9B74DF736C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67BCD539-E1BE-4F46-827B-D9B74DF736C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67BCD539-E1BE-4F46-827B-D9B74DF736C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67BCD539-E1BE-4F46-827B-D9B74DF736C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

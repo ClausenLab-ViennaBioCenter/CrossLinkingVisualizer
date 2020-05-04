@@ -27,4 +27,21 @@
 
     Public Property StrokeWeight As Double
 
+    Public Function GetSvgEntry() As String
+
+        Dim colorString As String
+
+        Select Case SSType
+            Case "H"
+                colorString = "red"
+            Case "E"
+                colorString = "green"
+            Case Else
+                colorString = "black"
+        End Select
+
+        Return ShapeToSVGConverter.RectangleToSVG(CType(Shape, Rectangle)) ',"none","grey")
+
+    End Function
+
 End Class

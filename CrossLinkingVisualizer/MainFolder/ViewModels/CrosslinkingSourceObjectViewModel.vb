@@ -82,4 +82,11 @@ Public Class CrosslinkingSourceObjectViewModel
     Public Sub Draw(iCrossLinkingParent As CrossLinkingPainter) Implements ICrosslinkingPainterDrawable.Draw
         DrawAdorners()
     End Sub
+
+    Public Function GetSvgEntry() As String
+
+        Return ShapeToSVGConverter.RectangleToSVG(CType(Shape, Rectangle))
+
+    End Function
+
 End Class
